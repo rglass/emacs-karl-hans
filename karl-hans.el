@@ -62,6 +62,9 @@
   (defun extract-children (xs)
     (nth 2
          (car xs)))
+  (defun parse-it (tag)
+    (extract-children (xml-get-children (car doc)
+                                        tag)))
   (let ((result-buffer (current-buffer)) doc)
     (unwind-protect
         (progn
@@ -69,11 +72,9 @@
           (setq doc (xml-parse-region (point-min) (point-max))))
       (kill-buffer result-buffer))
     (let ((number-of-clients
-           (extract-children (xml-get-children (car doc)
-                                               karl-hans-clients-tag)))
+           (parse-it karl-hans-clients-tag))
           (number-of-hosts
-           (extract-children (xml-get-children (car doc)
-                                               karl-hans-hosts-tag))))
+           (parse-it karl-hans-hosts-tag)))
       (print (concat karl-hans-clients-msg
                      number-of-clients
                      ", "
